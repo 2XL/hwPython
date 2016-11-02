@@ -1,4 +1,9 @@
-from demo import *
+# from __future__ import
+__all__ = ['demo']
+__version__ = '0.1'
+__author__ = 'chenglong zq'
+
+# from demo import *
 """
 
 __init__.py: can be an empty file but is often used to perform setup needed for the packages (import things, load things into path, etc)
