@@ -11,9 +11,9 @@ jgs`-.-`     '.____.'       `.____.'
 ```
 
 * [x] python
-* [ ] python-reusable-packages
-* [ ] Guido approves this :trollface: [Guido is God](http://www.artima.com/weblogs/viewpost.jsp?thread=211430)
- 
+* [x] python-reusable-packages
+* [x] Guido approves this :trollface: [Guido is God](http://www.artima.com/weblogs/viewpost.jsp?thread=211430)
+* [ ] [Best Practices Python Packages](https://github.com/obytes/best-practices-python-package)
 
 
 
