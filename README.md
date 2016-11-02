@@ -12,8 +12,8 @@ jgs`-.-`     '.____.'       `.____.'
 
 * [x] python
 * [ ] python-reusable-packages
-
-
+* [ ] Guido approves this :thumbs: [Guido is God](http://www.artima.com/weblogs/viewpost.jsp?thread=211430)
+ 
 
 
 
