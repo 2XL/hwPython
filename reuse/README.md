@@ -39,7 +39,7 @@
         * use one leading _ for non-public methods and instance variables
         * use two leading _ to invoke python name mangling rules: it is used mainly to avoid accidentally overloading of methods and name conflicts with supperclasses attributes. (write class that is expected to be extended multiple times)
         * always set __all__ even if its empty to support public API introspection 
-     
+        * always define __path__ package special attribute in the package root __init__.py file as an array with the reference of all inner __init__.py path
      
      
         
