@@ -16,10 +16,10 @@ class Method:
         pass
 
     def __str__(self):
-        pass # called when str(self)
+        pass  # called when str(self)
 
     def __bool__(self):
-        pass # if not defined __len__ is called, if neither then default: true.
+        pass  # if not defined __len__ is called, if neither then default: true.
 
     def __call__(self, *args, **kwargs):
         # invoked on self(args...), when an instance is called like a function.
