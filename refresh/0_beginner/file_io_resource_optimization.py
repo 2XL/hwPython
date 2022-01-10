@@ -10,7 +10,13 @@ import pprint
 import sys
 from io import TextIOWrapper
 
-
+def file_like_objects():
+    """
+    objects that behave like files
+    a semi-formal protocol
+    file behaviours are too varied for fully specified proto
+    EAFP - if it looks like a file, and reads like a file then it's a file (smart mode)
+    """
 def open_files():
     """
 
@@ -53,6 +59,11 @@ def with_context():
         sugar
         syntactic sugar
     """
+
+    from contextlib import closing
+    # create our own context manager
+    # with closing( instance close method ) as context_id:
+
 
     """Computing Mandelbrot sets."""
 
@@ -150,5 +161,5 @@ if __name__ == "__main__":
 
     # pdb
     # open_files()
-    with_context()
+    # with_context()
     pass
