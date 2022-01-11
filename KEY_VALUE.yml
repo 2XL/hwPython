@@ -2,5 +2,7 @@ keywords:
   REPL: "Read Eval Print Loop"
   IDE: "Integrated Development Environment"
   LEGB: "Local (function) Enclosing (Non local) Global (Module) Built-in (Script)"
-  LBYL: "Look before you leap"
-  EAFP: "Easier to ask forgiveness than permission"
+  LBYL: "Look Before You Leap"
+  EAFP: "Easier to Ask Forgiveness than Permission"
+  GIL: "Global Interpreter Lock"
+

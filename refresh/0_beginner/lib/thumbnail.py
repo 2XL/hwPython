@@ -8,6 +8,8 @@ from urllib.request import urlretrieve
 
 import PIL
 from PIL import Image
+from queue import Queue
+from threading import Thread
 
 FORMAT = "[%(threadName)10s, %(asctime)s, %(levelname)s] %(message)s]"
 
@@ -26,7 +28,8 @@ IMG_URLS = \
      'https://images.unsplash.com/photo-1641236709013-3e1583f4a53d',
      'https://images.unsplash.com/photo-1624005355480-1ad6131cff7d',
      'https://images.unsplash.com/photo-1622424114500-24202766581f',
-     'https://images.unsplash.com/photo-1641558995768-8d857b3ba1a8', ]
+     'https://images.unsplash.com/photo-1641558995768-8d857b3ba1a8',
+     ]
 
 
 class ThumbnailMakerService(object):
@@ -70,6 +73,45 @@ class ThumbnailMakerService(object):
         # allow more than x concurrent calls, limit concurrency o protect against gateway burst limit  
         
         """
+
+        """
+        threading.Event
+        
+        event = threading.Event()
+        # a client thread can wait for the flag to be set
+        event.wait() -> block if false
+        @ a server thread can set or reset it
+        event.set() -> block set the flag to true
+        event.clear() -> resets the flag to false
+        """
+
+        """
+        threading.Condition
+        -> producer/consumer -> each task is consumed by single worker
+        acquire()
+        release()
+        wait()
+        notify()
+        notify_all()
+        
+        """
+
+        """
+        queue
+        """
+        self.img_queue = Queue()
+        self.dl_queue = Queue()
+
+
+        """
+        Global Interpreter Lock
+        
+        a lock that prevents multiple native threads from executing python code at the same time 
+        
+        Singleton 
+        single thread multiprocessing
+        """
+
 
     def download_images(self, img_url_list):
         """
@@ -131,29 +173,36 @@ class ThumbnailMakerService(object):
         [t.join() for t in t_list]
 
         end = time.perf_counter()
-
+        self.dl_queue.put(None)  # termination condition for consumer
         logging.info("downloaded {} images in {} seconds".format(len(img_url_list), end - start))
 
-    def download_image(self, url):
-        with self.dl_sem:
-            destination_path = self.input_dir + os.path.sep
-            logging.info('downloading image at ' + url)
-            img_filename = urlparse(url).path.split('/')[-1] + '.jpeg'
-            urlretrieve(url, destination_path + img_filename)
-            img_size = os.path.getsize(destination_path + img_filename)
-            with self.dl_lock:
-                self.downloaded_bytes_counter += img_size
-                self.downloaded_images_counter += 1
-            logging.info("%s %10s%s %s" % (
-                str(self.threads_running), str(self.downloaded_bytes_counter), ' bytes: img saved at: ', img_filename))
+    def download_image(self):
+        # with self.dl_sem:
+        while not self.dl_queue.qsize() == 0:  # while image queue not empty
+            try:
+                url = self.dl_queue.get(block=False)
+                destination_path = self.input_dir + os.path.sep
+                logging.info('downloading image at ' + url)
+                img_filename = urlparse(url).path.split('/')[-1] + '.jpeg'
+                urlretrieve(url, destination_path + img_filename)
+                img_size = os.path.getsize(destination_path + img_filename)
+                # with self.dl_lock:
+                #     self.downloaded_bytes_counter += img_size
+                #     self.downloaded_images_counter += 1
+                logging.info("%s %10s%s %s" % (
+                    str(self.threads_running), str(self.downloaded_bytes_counter), ' bytes: img saved at: ',
+                    img_filename))
+                self.img_queue.put(img_filename)
+                self.dl_queue.task_done()
+            except Queue.Empty as ex:
+                print(ex)
+                logging.info("dl img queue empty")
+                pass
 
     def perform_resizing(self):
         """
         cpu intensive
         """
-        # validate inputs
-        if not os.listdir(self.input_dir):
-            return
         os.makedirs(self.output_dir, exist_ok=True)
 
         logging.info("beginning image resizing")
@@ -161,7 +210,11 @@ class ThumbnailMakerService(object):
         num_images = len(os.listdir(self.input_dir))
 
         start = time.perf_counter()
-        for filename in os.listdir(self.input_dir):
+
+        while True:
+            filename = self.img_queue.get()
+            if filename is None:
+                break
             orig_img = Image.open(self.input_dir + os.path.sep + filename)
             for basewidth in target_sizes:
                 img = orig_img
@@ -177,6 +230,7 @@ class ThumbnailMakerService(object):
                 img.save(self.output_dir + os.path.sep + new_filename)
 
             os.remove(self.input_dir + os.path.sep + filename)
+            self.img_queue.task_done()
         end = time.perf_counter()
 
         logging.info("created {} thumbnails in {} seconds".format(num_images, end - start))
@@ -188,8 +242,19 @@ class ThumbnailMakerService(object):
         logging.info("START make_thumbnails")
         start = time.perf_counter()
 
-        self.download_images(img_url_list)
-        # self.perform_resizing()
+        for img_url in img_url_list:
+            self.dl_queue.put(img_url)
+
+        num_dl_threads = 8
+        for _ in range(num_dl_threads):
+            t_producer = Thread(target=self.download_image)
+            t_producer.start()
+
+        t_consumer = threading.Thread(target=self.perform_resizing)
+        t_consumer.start()
+        self.dl_queue.join()
+        self.img_queue.put(None)
+        t_consumer.join()
 
         end = time.perf_counter()
         logging.info("END make_thumbnails in {} seconds".format(end - start))
