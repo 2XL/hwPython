@@ -54,8 +54,24 @@ def do_some_process(value=None):
     print("echo: {} ".format(value))
 
 
+def multi_process():
+    """
+    multi_process
+    """
+
+    # pools
+    from lib.thumbnail import ThumbnailMakerService, IMG_URLS, TB_SIZES
+    tn_maker = ThumbnailMakerService(tb_sizes=TB_SIZES)
+    tn_maker.mp_make_thumbnails(IMG_URLS)
+    pass
+
+
 if __name__ == "__main__":
     value = "this is a value"
     t = Process(target=do_some_process, args=(value,))
     t.start()
     t.join()
+    # monolith()
+    # sample_class_thread()
+    multi_process()
+    pass
