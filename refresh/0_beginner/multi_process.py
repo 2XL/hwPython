@@ -299,6 +299,11 @@ def future_object():
                             timeout=None) # yield generator
     """
 
+def async_programming():
+    """
+    AsyncIO -> Event Driven Arch
+    is a software design that orchestrates behaviour around the production, detection and consumption of events.
+    """
 
 if __name__ == "__main__":
 
