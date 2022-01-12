@@ -1,4 +1,5 @@
-print "Hello World!"
+print
+"Hello World!"
 
 
 def func(x): return (lambda n: x ** n)
@@ -27,11 +28,15 @@ def add(x, y): return (x + y)
 number_list_even = filter(lambda x: is_even(x), number_list)
 number_list_odd = filter(lambda x: not is_even(x), number_list)
 number_list_add_one = map(add_one, number_list)
+
+from functools import reduce
+
 number_list_sum = reduce(add, number_list)
 
 nums = range(2, 50)
 for i in range(2, 8):  # 7 x 7 = 49
-    print "Round: {} => {}".format(i, nums)  # cada iteracion se eliminan mas numeros.
+    print
+    "Round: {} => {}".format(i, nums)  # cada iteracion se eliminan mas numeros.
     nums = filter(lambda x: x == i or x % i, nums)
 
 
@@ -57,11 +62,11 @@ true_div = 1.0 / 2.0  # true division
 norm_div = 1.0 // 2.0  # floor division
 
 #  usage:
-print func(2)(3)
-print number_list
-print number_list_even
-print number_list_odd
-print number_list_add_one
-print number_list_sum
-print true_div
-print norm_div
+print(func(2)(3))
+print(number_list)
+print(number_list_even)
+print(number_list_odd)
+print(number_list_add_one)
+print(number_list_sum)
+print(true_div)
+print(norm_div)
