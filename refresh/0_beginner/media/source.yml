@@ -1,8 +1,19 @@
-images:
-  name: url.location
-
-thumbnails:
-  0: 3264x1836 # maximum
-  1: 200x200
-  2: 50:50
-  3: 32:32
+image_urls:
+  - 'https://images.unsplash.com/photo-1641821330404-765069b99aa2'
+  - 'https://images.unsplash.com/photo-1641735123812-2c82e2d7b691'
+  - 'https://images.unsplash.com/photo-1634544205365-ff8a96e06879'
+  - 'https://images.unsplash.com/photo-1639972997539-ce6fd166fac4'
+  - 'https://images.unsplash.com/photo-1582026416561-32c1a90e832f'
+  - 'https://images.unsplash.com/photo-1639864191241-c3ba360d8c5f'
+  - 'https://images.unsplash.com/photo-1576777486781-4fc7184eb4f8'
+  - 'https://images.unsplash.com/photo-1640098178528-27bf4b399da3'
+  - 'https://images.unsplash.com/photo-1630643596685-d9117d5f68ed'
+  - 'https://images.unsplash.com/photo-1641170254514-0298cc8314aa'
+  - 'https://images.unsplash.com/photo-1641236709013-3e1583f4a53d'
+  - 'https://images.unsplash.com/photo-1624005355480-1ad6131cff7d'
+  - 'https://images.unsplash.com/photo-1622424114500-24202766581f'
+  - 'https://images.unsplash.com/photo-1641558995768-8d857b3ba1a8'
+thumbnail_sizes:
+  - 200
+  - 50
+  - 32
