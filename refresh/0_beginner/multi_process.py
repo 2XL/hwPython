@@ -45,7 +45,10 @@ pool.join() # wait for the workers process to exit
 """
 
 # import multiprocessing
-from multiprocessing import Process
+import os
+import random
+from multiprocessing import Process, Pipe
+from threading import Thread
 
 
 def do_some_process(value=None):
@@ -66,6 +69,98 @@ def multi_process():
     pass
 
 
+def async_map():
+    """
+    map_async => func
+        iterable
+            chunk_size
+                callback_func
+
+    returns Async Result
+
+    AsyncResult.get =>
+        timeout
+
+    returns when result available.
+
+    apply => func
+        args
+            kwargs
+
+    async_apply => func
+        args
+            kwargs
+                callback
+                    error_callback
+
+
+    """
+
+
+def inter_process_communication():
+    """
+    Pipe (duplex (default) /unidirectional)
+    Queue
+
+    Intercommunication mechanism among process
+    """
+
+    def make_number(conn):
+        num = random.randint(1, 10)
+        conn.send(('Hi', num))
+        print(conn.recv())
+        pass
+
+    def make_text(conn):
+        num = conn.recv()[1]  # wait for msg
+        result = "{} * {} = {}".format(num, num, num * num)
+
+        conn.send(result)
+
+    connA, connB = Pipe(duplex=True)  # returns both ends of pipe
+    """
+    Race condition will corrupt data
+    """
+    """
+    Queue ensure data consistency
+    
+    
+    threading.Queue -> 
+        qsize
+        put
+        get
+        empty
+        full
+        task_done
+        join
+    multiprocessing.Queue -> 
+        qsize
+        put
+        get
+        empty
+        full
+    multiprocessing.JoinableQueue -> # 100% api compatibility 
+        qsize
+        put
+        get
+        empty
+        full
+        task_done
+        join
+    
+    
+    """
+    if os.environ.get('DEBUG', False):
+        p1 = Thread(target=make_text, args=(connA,))
+        p2 = Thread(target=make_number, args=(connB,))
+    else:
+        p1 = Process(target=make_text, args=(connA,))
+        p2 = Process(target=make_number, args=(connB,))
+    p1.start()
+    p2.start()
+    pass
+
+
 if __name__ == "__main__":
     value = "this is a value"
     t = Process(target=do_some_process, args=(value,))
@@ -73,5 +168,7 @@ if __name__ == "__main__":
     t.join()
     # monolith()
     # sample_class_thread()
-    multi_process()
+    # multi_process()
+    inter_process_communication()
+
     pass
