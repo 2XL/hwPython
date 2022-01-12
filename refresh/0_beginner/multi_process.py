@@ -45,9 +45,10 @@ pool.join() # wait for the workers process to exit
 """
 
 # import multiprocessing
+import ctypes
 import os
 import random
-from multiprocessing import Process, Pipe
+from multiprocessing import Process, Pipe, Value, Lock
 from threading import Thread
 
 
@@ -158,6 +159,73 @@ def inter_process_communication():
         p2 = Process(target=make_number, args=(connB,))
     p1.start()
     p2.start()
+    pass
+
+
+def sharing_states_between_process():
+    # error-prone hard to maintain.
+    """
+
+    ctypes:
+        - c > char
+        - u -> string
+        - i -> int
+        - l -> long
+        - f -> fload
+
+    Shared State:
+        - Shared Memory
+            - multiprocessing.Value ->
+                    typecode_or_type
+                        -> *args
+                            -> kw,
+                            -> lock Default type
+            - multiprocessing.Array ->
+
+        - Manager Process
+            is a shared process containing the mechanisms to arbitrate resources
+            - allow sharing across network (each client with proxy) - nameko
+
+            multiprocessing.Manager() # spins up a new process
+                - when this terminates, the child process will be garbage collected
+                data structures
+                    value
+                    array
+                    list
+                    dict
+                    namespace
+                    queue
+                sync mechanism
+                    lock
+                    rlock
+                    bounded semaphore
+                    event
+                    condition
+                    barrier
+
+    """
+
+    """
+    when use threads and when use process
+    THE Major difference are:-
+        1. Threads share address space of process that created it;processes have their own address
+        
+        2.Threads can directly communicate with other threads of its process;processes must use INTERPROCESS COMMUNICATE to talk with sibling processes.
+        
+        3.New threads are easily created;new processes require DUPLICATION of parent process
+        
+        4.Threads can exercise control over threads of same process;processes can only exercise control over child processes.
+        
+        5.Changes to the main thread(cancellation,priority change,etc)may affect
+        the behaviour of other threads of process;changes to parent process does not affect child processes
+    
+    """
+
+    counter = Value('i')  # counter
+    is_running = Value(ctypes.c_bool, False, lock=False)  # shared obj type boolean, defaulting false, un-synchronized
+    my_lock = Lock()
+    size_counter = Value('l', 0, lock=my_lock)  # shared object of type long, with a lock specified, default 0
+
     pass
 
 
