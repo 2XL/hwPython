@@ -45,10 +45,12 @@ pool.join() # wait for the workers process to exit
 """
 
 # import multiprocessing
+import asyncio
 import ctypes
 import hashlib
 import os
 import random
+from asyncio import AbstractEventLoop
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 from multiprocessing import Process, Pipe, Value, Lock
 from threading import Thread
@@ -299,11 +301,140 @@ def future_object():
                             timeout=None) # yield generator
     """
 
+
 def async_programming():
     """
     AsyncIO -> Event Driven Arch
     is a software design that orchestrates behaviour around the production, detection and consumption of events.
+
+
+    Example of events:
+        - Change of file state
+        - Timeout occurring
+    Event Loop
+        is responsible for getting items from an event queue and handling it
+
     """
+
+    def cooperative_multitasking_with_event_loops_and_coroutines():
+        """
+        Event loop is explicit
+        """
+        asyncio.get_event_loop()  # returns object of abstract event loop
+
+        AbstractEventLoop.run_forever()  # js set interval
+        AbstractEventLoop.stop()  # clear interval (when function pointer reach exit/return)
+        AbstractEventLoop.close()  # clear interval -> (gracefully release)
+        # COOPERATIVE MULTITASKING
+        # self-managed during I/O suspended & release resource.
+        # so caller can run other tasks
+        # when the io operation completes, the caller task will resume.
+        # Tasks => Coroutines
+        """
+        
+        Coroutine Function: 
+        Coroutine Object
+        """
+        AbstractEventLoop.run_until_complete()  #
+        pass
+
+
+def async_sample():
+    async def deleyed_hello():
+        print("hello")
+        await asyncio.sleep(1)
+        print("world")
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(deleyed_hello())
+    loop.close()
+
+    """
+    python - compatibility
+    
+    3.4 -> 3.5+
+    yield from -> await
+    @asyncio.coroutine -> async
+    
+    CoroutineObject = CoroutineFunction()
+        Future(CoroutineObject)
+
+    """
+
+    """
+    concurrent.future.Future # is blocking for result callback
+    manages the execution and represents the eventual result of a computation
+    
+    cancel -> terminate
+    done -> if completed return true 
+    result -> get the callback # blocking until result is available
+    exception ->
+    add_done_callback ->
+    
+    
+
+    AsyncIO # none blocking for result, it returns immediately even if it's not set -> in case not set raise exception.
+        almost all exec is handled by a single thread, therefore blocking is highly undesirable.
+        calling result does not block     
+        
+
+    The Right Way
+    
+    yield for future:
+    
+    # INSIDE coroutine will pause execution until future is done (parent)
+    await future
+    
+    # OUTSIDE loop stops after future is complete
+    loop.run_until_completed(future)
+    
+    Task
+        a subclass of Future that is used to wrap and manage the execution of a coroutine in an event loop
+        
+        asyncio.ensure_future(coro_or_future, * , loop=None)
+        
+        AbstractEventLoop.create_task(coro)
+    
+    Coroutine Chaining
+        a coroutine awaiting another coroutine
+        
+    coroutine.asyncio.wait(
+        futures,
+         *,
+          loop=None,
+           timeout=None, 
+           return_when=ALL_COMPLETED
+           )
+    """
+
+
+def parallel_exec_of_tasks():
+    """
+
+    """
+
+    async def get_item(i):
+
+        await asyncio.sleep(i)
+        return 'item ' + str(i)
+
+    async def get_items(num_items):
+        print('getting items')
+        item_coros = [
+            get_item(i)
+            for i in range(num_items)
+        ]
+        print('waiting for tasks to complete')
+        completed, pending = await asyncio.wait(item_coros)
+        results = [t.result() for t in completed]
+        print('results: {!r}'.format(results))
+
+    loop = asyncio.get_event_loop()
+    try:
+        loop.run_until_complete(get_items(4))
+    finally:
+        loop.close()
+
 
 if __name__ == "__main__":
 
@@ -320,5 +451,7 @@ if __name__ == "__main__":
         for text, hash_t in zip(texts, ppe.map(gen_hash, texts)):
             print("%s hash is %s" % (text, hash_t))
         pass
-
     pass
+
+    # async_sample()
+    parallel_exec_of_tasks()
