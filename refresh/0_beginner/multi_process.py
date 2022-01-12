@@ -424,16 +424,42 @@ def parallel_exec_of_tasks():
             get_item(i)
             for i in range(num_items)
         ]
-        print('waiting for tasks to complete')
-        completed, pending = await asyncio.wait(item_coros)
+        print('waiting 2s for tasks to complete')
+        completed, pending = await asyncio.wait(item_coros, timeout=2)
         results = [t.result() for t in completed]
         print('results: {!r}'.format(results))
 
+        if pending:
+            print('cancelling remaining tasks')
+            for t in pending:
+                t.cancel()
+
     loop = asyncio.get_event_loop()
+
     try:
         loop.run_until_complete(get_items(4))
+
+        """
+        alternative base on use cases
+        
+
+
+        async def task():
+            result = await asyncio.wait_for()  # single task completed
+            asyncio.as_completed()  # generator
+            await asyncio.gather()  # next item from generator, not ordered by arrival but exec sequence.
+        """
     finally:
         loop.close()
+
+
+def async_libraries():
+    """
+    avoid block, yield and do other tasks
+    """
+    # single threaded async behaviour
+
+
 
 
 if __name__ == "__main__":
