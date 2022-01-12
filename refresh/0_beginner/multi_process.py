@@ -46,10 +46,13 @@ pool.join() # wait for the workers process to exit
 
 # import multiprocessing
 import ctypes
+import hashlib
 import os
 import random
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 from multiprocessing import Process, Pipe, Value, Lock
 from threading import Thread
+from urllib.request import urlopen
 
 
 def do_some_process(value=None):
@@ -228,8 +231,77 @@ def sharing_states_between_process():
 
     pass
 
+    def use_cases():
+        """
+
+        -- divide your tasks into IO bounded and CPU bounded
+        cpu -> process
+        io -> threads
+
+        tasks mix io and cpu
+        change of platforms
+
+
+        Execution Methods phase
+            API
+                .submit -> future
+                .map ->  n
+                .shutdown -> signal to executor to stop accepting tasks and shutdown
+
+
+        """
+
+
+def thread_pool_executor():
+    def load_url(url, timeout):
+        with urlopen(url, timeout=timeout) as conn:
+            return conn.read()
+
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        url = "https://noluengo.com/"
+        url2 = "https://goletakarya.com/"
+        f1 = executor.submit(load_url, url, 60)
+        f2 = executor.submit(load_url, url2, 50)
+
+        try:
+            data = f1.result()
+            print("{} page is {} bytes".format(url, len(data)))
+            data2 = f2.result()
+            print("{} page is {} bytes".format(url2, len(data2)))
+        except Exception as ex:
+            print("Ex download " + str(ex))
+
+
+texts = [b'hello', b'world']
+
+
+def gen_hash(text):
+    return hashlib.sha384(text).hexdigest()
+
+
+def future_object():
+    """
+    An object that acts as a proxy for a result that is yet to be completed
+
+    Async Programming
+
+    future = executor.submit(func, args*)
+    ... do other things ...
+    result = future.result() # blocking - raise exeception
+            future.cancel() # attempt () / return True is successful
+            future.done() # returns true if completed or canceled
+            future.add_done_callback(func) # attaches function to be called on completion or cancellation # can chain
+
+    concurrent.future.wait(fs,
+                            timeout=None,
+                             return_when=ALL_COMPLETED) # blocking
+     concurrent.future.as_completed(fs,
+                            timeout=None) # yield generator
+    """
+
 
 if __name__ == "__main__":
+
     value = "this is a value"
     t = Process(target=do_some_process, args=(value,))
     t.start()
@@ -237,6 +309,11 @@ if __name__ == "__main__":
     # monolith()
     # sample_class_thread()
     # multi_process()
-    inter_process_communication()
+    # inter_process_communication()
+
+    with ProcessPoolExecutor(max_workers=None) as ppe:
+        for text, hash_t in zip(texts, ppe.map(gen_hash, texts)):
+            print("%s hash is %s" % (text, hash_t))
+        pass
 
     pass
