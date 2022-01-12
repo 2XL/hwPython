@@ -56,6 +56,11 @@ from multiprocessing import Process, Pipe, Value, Lock
 from threading import Thread
 from urllib.request import urlopen
 
+import aiocassandra as aiocassandra
+import aiohttp
+import aiomysql as aiomysql
+import aiopg as aiopg
+
 
 def do_some_process(value=None):
     print("doing some task")
@@ -457,9 +462,57 @@ def async_libraries():
     """
     avoid block, yield and do other tasks
     """
+
     # single threaded async behaviour
+    def server():
+        from aiohttp import web  # nodejs/flask
 
+        async def handle(request):
+            name = request.match_info.get('name', "Anon")
+            text = "hello, " + name
+            return web.Response(text=text)
 
+        app = web.Application()
+        app.router.add_get('/', handle)
+        app.router.add_get('/ping', handle)
+        app.router.add_get('/{name}', handle)
+        web.run_app(app)
+
+    def client():
+        async def fetch(session, url):
+            async with session.get(url) as response:
+                return await response.text()
+
+        async def main():
+            async with aiohttp.ClientSession() as session:
+                html = await fetch(session, 'http://python.org')
+                print(html)
+
+        pass
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(main())
+
+    def input_output_files():
+        # async io enabled alternative to standard file API
+        """
+        similar API
+        support async and await
+
+        """
+        pass
+
+    def db_aio():
+        """
+        more async libraries
+        aiomysql
+        aiopg
+        aiocouchdb
+        aiocassandra
+        """
+
+    def combine_coro_with_threads_and_processes():
+        # coroutine AbstractEventLoop.run_until_complete() # default number of threads -> based on processor cores av.
+        pass
 
 
 if __name__ == "__main__":
