@@ -35,7 +35,7 @@ E. strive to be earth's best employer
 F. success and scale bring broad responsabilty
 
 
-application of the principles in previous working experience:
+application of the principles in previous working experience: -> application one of each...git stat
   -> take ownership of tasks
   -> invent and simplify
   -> deliver results 
@@ -101,8 +101,9 @@ dialogue -> clarification questions
     -> readable and solves the problem
     -> library function?
 
-#### tantes de empezar a codificar,
+#### antes de empezar a codificar,
   -> plantear el problema 
+    -> how to break down the cope problem
   -> propuestas de solución
   -> disponer de pseudo codigo
   -> precondición postcondición asserts
@@ -115,8 +116,27 @@ dialogue -> clarification questions
         -> training opportunities
         -> plan the route
         -> figure out what to wear
-
 #### is there a bar raiser
   -> highest standards
-  ->
+  -> 2 weeks 4 prepare
+  -> dynamic programming? tree's...
+      -> make your algorithm more efficient by storing intermediate result
+      -> repetitive competitions
+      -> recursion
+      -> application
+          -> prime numbers
+          -> fibonacci
+          -> mander
+  -> data structures? heaps -> sorts -> complexity -> broad, quick, sort, do some tests, 
+  -> writing prompt to explain the decisions taken
+  -> operating systems
+  -> distributed systems? 
+  -> problem solving session
+  -> genually interested in your team
+  -> what cool things you work on
+  -> how was your career development over the years
+  -> how do you feel like % supports you specifically through the pandemic period work-life balance 
+
+
+
 
