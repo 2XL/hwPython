@@ -1,0 +1,18 @@
+game:
+  rank: 13
+  suite: XYZK
+  points: asc
+  play_order: 1 # 1 clockwise / -1 anticlock white
+  start_cards: 5
+  draw_limit: 5
+
+
+players:
+  - player: "rob"
+      strategy: "fifo"
+  - player: "alice"
+      strategy: "fifo"
+  - player: "bob"
+      strategy: "fifo"
+  - player: "ted"
+      strategy: "fifo"
