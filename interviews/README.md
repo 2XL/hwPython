@@ -175,7 +175,7 @@ dialogue -> clarification questions
 4. a time when you sacrificed short term goals for long term success -> your ownership of a problem
 5. what's your most successful project? -> your standards, following updates
 6. tell me about a time when you were wrong -> admit & grow from that experience - delivering results - why u get ask?
-7. tell me the thought deadline you meet -> inspite the struggles - > deliver results
+7. tell me the thought deadline you meet -> in-spite the struggles - > deliver results
 8. disagreement with your boss -> held your backbone -> I was not necessarily the right person -> interpersonal kill
 9. tell me about a conflict with a colleague -> earn trust
 10. what's the most challenging project you've worked on? -> your most successful story
@@ -202,3 +202,72 @@ dialogue -> clarification questions
     9. record and listen, 1min or less
     10. where do you come from?, why you took the decisions, why am I the good person, why would I fit?
 
+#### leadership & system design
+- [amazon leadership - know and applied](https://www.amazon.jobs/en/principles)
+- [bytedance - code of conduct](https://sf16-sg.tiktokcdn.com/obj/eden-sg/upsnuhpevbn/bytedance_official/code_of_conduct.pdf)
+- Design:
+  - pro
+      - latency
+      - concurrency
+      - consistency
+      - data storage
+      - business logic
+      - api 
+      - services
+      - SOA
+      - enhanced security
+      - resilience and redundancy
+      - maintenance flexibility
+      - scalability
+      - availability
+      - disaster recovery
+      - developer friendly environment
+      - n tiered software - MVC - best suited for teamwork - effective fault management [layers under server-client]
+        - presentation
+        - presentation logic
+        - business logic
+        - data logic
+        - database
+  - cons
+    - performance (overextended layers)
+    - additional initial expenses
+    - running maintenance with expensive budget as well as support services
+- soa:
+  - re-usability
+  - efficiency cost
+  - interoperability
+  - flexibility
+  - scalability
+- design start with (custoemr) -> work backward:
+  - who are you?
+  - what to expect from me?
+  - what is being assumed to be included?
+  - what is the growth track and how will the system behave.
+- Data structures and algorithms
+  - assessment -> chose the most efficient run time solution.
+  - read intensive
+  - write intensive
+  - tune up
+  - consider the build in libraries
+  - discuss runtimes, theoretical limitations, basic implementations strategies for different cases of algorithms.
+- refresh
+  - search binary tree data
+    - sort
+    - search
+      - max
+      - min
+  - scalability methods
+    - redundancy
+    - partitioning
+    - caching
+    - indexing
+    - load balancing
+    - queues
+- metrics:
+  - differences , complexity, benefits, operations
+  - cost saving, revenue generation
+  - quantity to understand volume, size, scale
+  - percentatge change, year over year improvements
+  - time to market, implement time, time saving,
+  - impact on the customer, the team
+  - quanlity improvments
